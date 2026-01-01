@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\BlogController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,7 +40,13 @@ Route::middleware(['auth'])->group(function () {
 
     // category
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 
+    // blog
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+    
     // loan
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
 

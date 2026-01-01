@@ -17,7 +17,7 @@
             {{-- User --}}
             <li>
                 <a href="{{ route('dashboard') }}"
-                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group shadow-sm bg-slate-100">
+                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group shadow-sm {{ request()->routeIs('dashboard') ? 'bg-slate-100' : '' }}">
                     <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                         viewBox="0 0 24 24">
@@ -34,7 +34,7 @@
                 @role('admin')
                 <li>
                     <a href="{{ route('users.index') }}"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
+                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('users.*') ? 'bg-slate-100' : '' }}">
                         <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             viewBox="0 0 24 24">
@@ -45,24 +45,26 @@
                     </a>
                 </li>
             @endrole
-            </li>
-
-            
-            <li>
-                <a href="{{ route('items.index') }}"
-                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
+             <li>
+                <a href="{{ route('blogs.index') }}"
+                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('blogs.*') ? 'bg-slate-100' : '' }}">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                         viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
                     </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Items</span>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Blog</span>
                 </a>
             </li>
+
+            </li>
+            
+            <hr class="my-4">
+
             <li>
                 <a href="{{ route('categories.index') }}"
-                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
+                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('categories.*') ? 'bg-slate-100' : '' }}">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                         viewBox="0 0 24 24">
@@ -75,8 +77,23 @@
                 </a>
             </li>
             <li>
+            
+            <li>
+                <a href="{{ route('items.index') }}"
+                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('items.*') ? 'bg-slate-100' : '' }}">
+                    <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Items</span>
+                </a>
+            </li>
+           
+            
                 <a href="{{ route('loans.index') }}"
-                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
+                    class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('loans.*') ? 'bg-slate-100' : '' }}">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2100/svg" width="24" height="24" fill="none"
                         viewBox="0 0 24 24">

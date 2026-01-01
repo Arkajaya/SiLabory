@@ -38,6 +38,65 @@
                 @yield('content')
             </main>
             
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    @if(session('success'))
+                        Swal.fire({
+                            icon: 'success',
+                            title: {!! json_encode(session('success')) !!},
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
+                    @endif
+
+                    @if(session('error'))
+                        Swal.fire({
+                            icon: 'error',
+                            title: {!! json_encode(session('error')) !!},
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
+                    @endif
+
+                    @if($errors->any())
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation error',
+                            text: {!! json_encode($errors->first()) !!},
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                        });
+                    @endif
+                    
+                    document.querySelectorAll('.delete-form').forEach(form => {
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault()
+
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'This data cannot be recovered!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#dc2626',
+                            cancelButtonColor: '#64748b',
+                            confirmButtonText: 'Yes, delete it!',
+                            cancelButtonText: 'Cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit()
+                            }
+                        })
+                    })
+                })
+                });
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
             <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
         </div>
