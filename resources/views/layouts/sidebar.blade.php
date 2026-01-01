@@ -16,7 +16,7 @@
             class="space-y-2 font-medium [&>li:hover]:shadow-md [&>li:hover]:transition-all  [&>li:hover]:rounded-sm [&>li:hover]:duration-300">
             {{-- User --}}
             <li>
-                <a href="#"
+                <a href="{{ route('dashboard') }}"
                     class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group shadow-sm bg-slate-100">
                     <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -33,7 +33,7 @@
 
                 @role('admin')
                 <li>
-                    <a href="#"
+                    <a href="{{ route('users.index') }}"
                         class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
                         <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -49,7 +49,7 @@
 
             
             <li>
-                <a href="#"
+                <a href="{{ route('items.index') }}"
                     class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -61,7 +61,7 @@
                 </a>
             </li>
             <li>
-                <a href="#"
+                <a href="{{ route('categories.index') }}"
                     class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -75,7 +75,7 @@
                 </a>
             </li>
             <li>
-                <a href="#"
+                <a href="{{ route('loans.index') }}"
                     class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
                     <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
                         xmlns="http://www.w3.org/2100/svg" width="24" height="24" fill="none"
@@ -86,37 +86,26 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Loans</span>
                 </a>
             </li>
-            <li>
-                <form action="{{ route('logout') }}" method="post">
-                    <a href=""
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
-                        </svg>
-                        @csrf
-                        <span class="flex-1 ms-3 whitespace-nowrap" :href="route('logout')"
-                            onclick="event.preventDefault(); 
-                            this.closest('form').submit();">Sign
-                            Out</span>
-                    </a>
-                </form>
-            </li>
         </ul>
+        @role('admin')
         <div
             class=" text-center font-medium text-base text-gray-800 dark:text-black-200 absolute bottom-0 left-0 right-0 border-t border-default py-2">
-            {{ Auth::user()->name }}</div>
+            Admin
+        </div>
+        @endrole
+        @role('asisten')
+        <div
+            class=" text-center font-medium text-base text-gray-800 dark:text-black-200 absolute bottom-0 left-0 right-0 border-t border-default py-2">
+            Asisten
+        </div>
+        @endrole
+
     </div>
 </aside>
 
 <div class="sm:ml-64 bg-white">
-    <nav class="h-14 p-4 border-b border-default flex items-center ">
-        <h1 class="font-normal tracking-widest text-xl "><span class="font-extrabold tracking-wider">SILABORY</span> (
-            System Manajemen Lab Inventory )</h1>
-    </nav>
+    @include('layouts.navigation')
+
     <main class="p-4">
         {{ $slot }}
     </main>

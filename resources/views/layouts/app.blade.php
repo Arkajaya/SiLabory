@@ -17,10 +17,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen    dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-            @role('user')
-            @include('layouts.navigation')
-            @endrole
+        <div class="min-h-screen bg-sky-300/20 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
 
             @role('admin|asisten')
                 @include('layouts.sidebar')
