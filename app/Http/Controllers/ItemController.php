@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -39,9 +40,44 @@ class ItemController extends Controller
             $validated['photo'] = $path;
         }
 
-        dd($validated);
         Item::create($validated);
 
         return redirect()->route('items.index')->with('success', 'Item added successfully.');
+    }
+
+    public function update(Request $request, Item $item)
+    {
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'stock' => 'required|integer|min:1',
+            'condition' => 'required|string|max:255',
+            'photo' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            // delete old photo if exists
+            if ($item->photo && Storage::disk('public')->exists($item->photo)) {
+                Storage::disk('public')->delete($item->photo);
+            }
+
+            $path = $request->file('photo')->store('items', 'public');
+            $validated['photo'] = $path;
+        }
+
+        $item->update($validated);
+
+        return redirect()->route('items.index')->with('success', 'Item updated successfully.');
+    }
+
+    public function destroy(Item $item)
+    {
+        if ($item->photo && Storage::disk('public')->exists($item->photo)) {
+            Storage::disk('public')->delete($item->photo);
+        }
+
+        $item->delete();
+
+        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
 }
