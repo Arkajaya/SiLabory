@@ -37,6 +37,9 @@ Route::middleware(['auth'])->group(function () {
     
     // item
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+    Route::post('/items', [ItemController::class, 'store'])->name('items.store');
+    Route::patch('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+    Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 
     // category
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
