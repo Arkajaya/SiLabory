@@ -17,6 +17,7 @@ class Item extends Model
         'stock',
         'condition',
         'photo',
+        'item_status',
     ];
 
     public function category()

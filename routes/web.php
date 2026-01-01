@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
         // user
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     
     // item
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
@@ -49,9 +52,19 @@ Route::middleware(['auth'])->group(function () {
 
     // blog
     Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
     
     // loan
-    Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
+    Route::get('/loans', [LoanController::class, 'indexSubmited'])->name('loans.submited');
+    Route::get('/loans/responded', [LoanController::class, 'indexResponded'])->name('loans.responded');
+    Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
+    Route::patch('/loans/{loan}', [LoanController::class, 'update'])->name('loans.update');
+    Route::delete('/loans/{loan}', [LoanController::class, 'destroy'])->name('loans.destroy');
+
+    // user detail
+    Route::get('/user/detail', [UserController::class, 'detail'])->name('user.detail');
 
 });
 

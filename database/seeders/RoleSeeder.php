@@ -22,6 +22,9 @@ class RoleSeeder extends Seeder
         $user1 = User::create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
+            'nim' => 'K3456289',
+            'study_program' => 'Pendidikan Teknologi Informasi',
+            'card_identity_photo' => 'path/to/card_identiasdty_photo.jpg',
             'password' => bcrypt('password')
         ]);
         $user1->assignRole($admin);
@@ -29,6 +32,9 @@ class RoleSeeder extends Seeder
         $user2 = User::create([
             'name' => 'Regular User',
             'email' => 'user@example.com',
+            'nim' => 'K3456739',
+            'study_program' => 'Pendidikan Teknologi Informasi',
+            'card_identity_photo' => 'path/to/card_identitasy_photo.jpg',
             'password' => bcrypt('password')
         ]);
         $user2->assignRole($user);
@@ -36,6 +42,9 @@ class RoleSeeder extends Seeder
         $user3 = User::create([
             'name' => 'Assisten User',
             'email' => 'asisten@example.com',
+            'nim' => 'K3456189',
+            'study_program' => 'Pendidikan Teknologi Informasi',
+            'card_identity_photo' => 'path/to/card_idenstity_photo.jpg',
             'password' => bcrypt('password')
         ]);
         $user3->assignRole($asisten);

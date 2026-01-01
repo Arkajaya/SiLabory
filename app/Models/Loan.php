@@ -15,6 +15,8 @@ class Loan extends Model
         'loan_date',
         'return_date',
         'status',
+        'loan_letter',
+        'loan_letter_photo',
     ];
 
     protected $casts = [

@@ -22,8 +22,8 @@ class ItemController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'stock' => 'required|integer|min:1',
-            'condition' => 'required|string|max:255',
-            'photo' => 'nullable|image|max:2048',
+            'condition' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:5120',
         ]);
 
         // generate a unique code for the item
@@ -39,9 +39,42 @@ class ItemController extends Controller
             $validated['photo'] = $path;
         }
 
-        dd($validated);
         Item::create($validated);
 
         return redirect()->route('items.index')->with('success', 'Item added successfully.');
+    }
+
+    public function update(Request $request, Item $item)
+    {
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'stock' => 'required|integer|min:1',
+            'condition' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:5120',
+        ]);
+
+        // generate a unique code for the item
+        do {
+            $code = 'ITM-'.Str::upper(Str::random(6));
+        } while (Item::where('code', $code)->exists());
+
+        $validated['code'] = $code;
+
+        // handle photo upload
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('items', 'public');
+            $validated['photo'] = $path;
+        }
+
+        $item->update($validated);
+
+        return redirect()->route('items.index')->with('success', 'Item updated successfully.');
+    }
+
+    public function destroy(Item $item)
+    {
+        $item->delete();
+        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
 }
