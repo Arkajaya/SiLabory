@@ -127,7 +127,7 @@
             <!-- component -->
             <div class="my-8 max-h-[86dvh] overflow-y-hidden hover:overflow-y-auto lg:w-[800px] w-[335px]">
                 <div class="flex items-center justify-between mb-4">
-                    <input id="search-user-items" type="text" placeholder="Cari item..." class="border rounded px-3 py-2 w-64 text-sm" />
+                    <input id="search-loan-show" type="text" placeholder="Cari barang..." class="border rounded px-3 py-2 w-64 text-sm" />
                     <div></div>
                 </div>
                 <ul id="items-list" role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
@@ -137,65 +137,35 @@
                     {{ $items->links() }}
                 </div>
             </div>
-
-            <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const input = document.getElementById('search-user-items');
-                let timer = null;
-                input.addEventListener('input', function () {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => {
-                        const q = encodeURIComponent(input.value || '');
-                        fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                            .then(r => r.text())
-                            .then(html => { document.getElementById('items-list').innerHTML = html; });
-                    }, 300);
-                });
-            });
-            </script>
-
-                <div class="mt-6 flex justify-center">
-                    {{ $items->links() }}
-                </div>
-            </div>
         </main>
-
-        @foreach($items as $it)
-            <x-modal name="item-detail-user-{{ $it->id }}">
-                <div class="p-6 max-w-md mx-auto">
-                    <h3 class="text-lg font-semibold">{{ $it->name }}</h3>
-                    <p class="text-sm text-[#706f6c]">Kondisi: {{ $it->condition }}</p>
-                    <div class="mt-4 flex justify-center">
-                        <img src="{{ $it->photo ? asset('storage/'.$it->photo) : asset('images/default.png') }}" class="max-w-full h-auto max-h-48 object-contain" alt="{{ $it->name }}">
-                    </div>
-                    @if($it->description)
-                        <p class="mt-4 text-sm">{{ $it->description }}</p>
-                    @endif
-                    <div class="flex justify-end gap-2 mt-4">
-                        <x-secondary-button x-on:click="$dispatch('close-modal', 'item-detail-user-{{ $it->id }}')">Close</x-secondary-button>
-                    </div>
-                </div>
-            </x-modal>
-
-            <x-modal name="create-loan-user-{{ $it->id }}">
-                <form method="POST" action="{{ route('loans.store') }}" class="p-6">
-                    @csrf
-                    <input type="hidden" name="item_id" value="{{ $it->id }}">
-                    <div class="mb-4">
-                        <label class="block text-sm">Jumlah</label>
-                        <input type="number" name="qty" min="1" max="{{ $it->stock ?? 1 }}" value="1" class="border rounded px-3 py-2 w-full" required>
-                    </div>
-                    <div class="flex justify-end gap-2">
-                        <x-secondary-button x-on:click="$dispatch('close-modal', 'create-loan-user-{{ $it->id }}')">Batal</x-secondary-button>
-                        <x-primary-button type="submit">Pinjam</x-primary-button>
-                    </div>
-                </form>
-            </x-modal>
-        @endforeach
+        
 
         @include('layouts.footer')
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
+        <script>
+            (function(){
+                const input = document.getElementById('search-loan-show');
+                const list = document.getElementById('items-list');
+                if (!input || !list) return;
+                let timeout = null;
+                input.addEventListener('input', function(){
+                    clearTimeout(timeout);
+                    timeout = setTimeout(async function(){
+                        const q = encodeURIComponent(input.value || '');
+                        const url = "{{ route('users.list') }}" + (q ? ('?q=' + q) : '');
+                        try {
+                            const res = await fetch(url, { headers: {'X-Requested-With':'XMLHttpRequest'} });
+                            if (!res.ok) return;
+                            const html = await res.text();
+                            list.innerHTML = html;
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }, 300);
+                });
+            })();
+        </script>
     </body>
 </html>
