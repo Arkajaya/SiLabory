@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'nim' => 'K3456789',
+            'study_program' => 'Pendidikan Teknologi Informasi',
+            'card_identity_photo' => 'path/to/card_identity_photo.jpg'
         ]);
+
+        $this->call(RoleSeeder::class);
+        // $this->call(LoansSeeder::class);
     }
 }
