@@ -26,7 +26,10 @@
                                         <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
                                             {{ $loans->firstItem() + $loop->index }}
                                         </th>
-                                        <td class="px-6 py-4"> <a href="{{ route('user.detail', ['user_id' => $loan->user->id]) }}">{{ $loan->user?->name }}</a></td>
+                                        <td class="px-6 py-4">
+                                            @php $uid = $loan->user_id ?? $loan->user?->id; @endphp
+                                            <a href="{{ $uid ? route('user.detail', ['user_id' => $uid]) : '#' }}">{{ $loan->user?->name ?? '—' }}</a>
+                                        </td>
                                         <td class="px-6 py-4">{{ $loan->id }}</td>
                                         <td class="px-6 py-4">
                                             <div class="max-h-24 overflow-y-auto">

@@ -178,4 +178,85 @@ class LoanController extends Controller
         return view('users.user-loan', compact('loans'));
     }
 
+    /**
+     * Show all loan activities for admins/asisten (paginated).
+     */
+    public function activities(Request $request)
+    {
+        $loans = Loan::with(['user', 'loanDetails.item'])
+            ->orderBy('updated_at', 'desc')
+            ->paginate(20);
+
+        return view('activities.index', compact('loans'));
+    }
+
+    /**
+     * Export activities summary for a given month to PDF (or HTML fallback).
+     * Accepts `month` as YYYY-MM string, defaults to current month.
+     */
+    public function exportActivities(Request $request)
+    {
+        $month = $request->query('month');
+        try {
+            $start = $month ? Carbon::createFromFormat('Y-m', $month)->startOfMonth() : Carbon::now()->startOfMonth();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Invalid month format. Use YYYY-MM.');
+        }
+
+        $end = (clone $start)->endOfMonth();
+
+        $loans = Loan::with(['user', 'loanDetails.item'])
+            ->whereBetween('updated_at', [$start->toDateTimeString(), $end->toDateTimeString()])
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $summary = [
+            'total_loans' => $loans->count(),
+            'by_status' => $loans->groupBy('status')->map->count()->toArray(),
+            'total_items' => $loans->flatMap(fn($l) => $l->loanDetails)->sum('quantity'),
+        ];
+
+        $data = compact('loans', 'summary', 'start', 'end');
+
+        $filename = 'activities_summary_' . $start->format('Y_m') . '.pdf';
+
+        // If barryvdh/laravel-dompdf (PDF facade) is available, use it.
+        if (class_exists(\Barryvdh\DomPDF\Facade::class) || class_exists(\Barryvdh\DomPDF\PDF::class) || class_exists('PDF')) {
+            try {
+                $pdf = \PDF::loadView('activities.pdf', $data)->setPaper('a4', 'portrait');
+                return $pdf->download($filename);
+            } catch (\Exception $e) {
+                // fall through to HTML fallback
+            }
+        }
+
+        // If native dompdf is present, use it
+        if (class_exists(\Dompdf\Dompdf::class)) {
+            try {
+                $html = view('activities.pdf', $data)->render();
+                $dompdf = new \Dompdf\Dompdf();
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                return response($dompdf->output(), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                ]);
+            } catch (\Exception $e) {
+                // fall through to HTML fallback
+            }
+        }
+
+        // Fallback: return rendered HTML as a downloadable file and inform user how to enable PDF support.
+        $html = view('activities.pdf', $data)->render();
+        $fallbackName = 'activities_summary_' . $start->format('Y_m') . '.html';
+        $headers = [
+            'X-Export-Fallback' => 'To enable real PDF export, run: composer require barryvdh/laravel-dompdf',
+        ];
+
+        return response()->streamDownload(function () use ($html) {
+            echo $html;
+        }, $fallbackName, $headers);
+    }
+
 }

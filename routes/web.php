@@ -59,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
     Route::get('/blogs/{blog:slug}', [BlogController::class, 'show'])->name('blogs.show');
     Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::get('/activities', [LoanController::class, 'activities'])->name('activities.index');
+    Route::get('/activities/export', [LoanController::class, 'exportActivities'])->name('activities.export');
     Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
     
