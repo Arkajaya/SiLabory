@@ -125,7 +125,8 @@
         <main class="h-dvh mb-16 w-[90%] lg:w-full lg:max-w-4xl flex flex-col items-center">
             <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">Loans History</h1>
             <div class="my-6 relative overflow-y-auto z-0 bg-primary shadow-xs rounded-base border border-default w-full">
-                <table class="w-full  text-sm text-left rtl:text-right text-body -z-10">
+                <div class="overflow-x-auto">
+                <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body -z-10">
                     <thead class="text-sm text-body border-b border-default">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-medium">
@@ -200,6 +201,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
             </div>
 
         </main>

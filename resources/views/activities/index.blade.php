@@ -15,7 +15,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
                    
-                    <table class="w-full text-sm text-left text-body">
+                    <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto w-full text-sm text-left text-body">
                         <thead class="text-sm font-bold text-body bg-neutral-secondary-soft border-b">
                             <tr>
                                 <th class="px-4 py-2">#</th>
@@ -47,7 +48,7 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                    </div>
                     <div class="mt-4">{{ $loans->links() }}</div>
                 </div>
             </div>

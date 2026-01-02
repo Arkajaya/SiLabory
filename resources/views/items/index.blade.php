@@ -13,7 +13,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
-                    <table class="w-full text-sm text-left rtl:text-right text-body">
+                    <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
                         <thead
                             class="text-sm font-bold  text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                             <tr>
@@ -62,10 +63,10 @@
                                     <div class="w-20 h-20 mx-auto">
                                         @if($item->photo)
                                         <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}"
-                                            class="w-20 h-20 object-cover rounded-md">
+                                            class="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-md">
                                         @else
                                         <div
-                                            class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center text-sm text-gray-500">
+                                            class="w-20 h-20 sm:w-28 sm:h-28 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center text-sm text-gray-500">
                                             No Image</div>
                                         @endif
                                     </div>
@@ -89,6 +90,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                     <div class="mt-4">
                         {{ $items->links() }}
                     </div>

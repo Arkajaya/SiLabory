@@ -1,10 +1,12 @@
-<x-guest-layout class="">
-    <div class="mx-16 flex *:w-[50%] gap-10 justify-center bg-gray-200/40 rounded-lg shadow-lg px-9 py-8 my-12">
-    <div class=" flex justify-center items-center mb-4">
-        <img src="{{ asset('logo.png') }}" alt="" class="w-72">
-    </div>
-    
-    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+<x-guest-layout>
+    <div class="mx-auto max-w-4xl my-12 bg-gray-200/40 rounded-lg shadow-lg overflow-hidden">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center gap-8 p-6 lg:p-10">
+            <div class="w-full lg:w-1/3 flex justify-center">
+                <img src="{{ asset('logo.png') }}" alt="" class="w-48 sm:w-56 lg:w-72">
+            </div>
+
+            <div class="w-full lg:w-2/3">
+                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
         <!-- Name -->
@@ -21,16 +23,16 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div class="w-full flex *:w[50%] gap-4">
-        <!-- NIM -->
-            <div class="mt-4">
+        <div class="w-full flex flex-col sm:flex-row gap-4">
+            <!-- NIM -->
+            <div class="mt-4 w-full sm:w-1/2">
                 <x-input-label for="nim" :value="__('NIM*')" />
                 <x-text-input id="nim" class="block mt-1 w-full" type="text" name="nim" :value="old('nim')" />
                 <x-input-error :messages="$errors->get('nim')" class="mt-2" />
             </div>
 
             <!-- Study Program -->
-            <div class="mt-4">
+            <div class="mt-4 w-full sm:w-1/2">
                 <x-input-label for="study_program" :value="__('Study Program')" />
                 <x-text-input id="study_program" class="block mt-1 w-full" type="text" name="study_program" :value="old('study_program')" required />
                 <x-input-error :messages="$errors->get('study_program')" class="mt-2" />
@@ -71,7 +73,7 @@
             <x-input-error :messages="$errors->get('card_identity_photo')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex flex-col sm:flex-row items-center sm:justify-end gap-3 mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
@@ -81,6 +83,7 @@
             </x-primary-button>
         </div>
     </form>
+    </div>
     </div>
 </x-guest-layout>
 

@@ -13,7 +13,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
-                        <table class="w-full text-sm text-left rtl:text-right text-body">
+                    <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
                             <thead class="text-sm font-bold  text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 font-medium">No</th>
@@ -230,9 +231,9 @@
                     <div>
                         <strong>Loan Letter Photo:</strong>
                         @if($loan->loan_letter_photo)
-                            <div class="mt-2">
+                                    <div class="mt-2">
                                 <a href="{{ asset('storage/' . $loan->loan_letter_photo) }}" target="_blank">
-                                    <img src="{{ asset('storage/' . $loan->loan_letter_photo) }}" alt="Loan Photo" class="w-48 h-48 object-cover rounded" />
+                                    <img src="{{ asset('storage/' . $loan->loan_letter_photo) }}" alt="Loan Photo" class="w-48 h-48 sm:w-64 sm:h-64 object-cover rounded" />
                                 </a>
                             </div>
                         @else

@@ -132,6 +132,24 @@
     </div>
 </aside>
 
+    <!-- Mobile account / logout (show only on small screens, when sidebar is used) -->
+    @auth
+        <div class="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-default">
+            <div class="px-4 py-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="font-medium text-sm">{{ Auth::user()->name }}</div>
+                        <div class="text-xs text-gray-500">{{ Auth::user()->email }}</div>
+                    </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-sm text-red-600 hover:text-red-700">Log out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endauth
+
 <div class="sm:ml-64 bg-white">
     @include('layouts.navigation')
 
