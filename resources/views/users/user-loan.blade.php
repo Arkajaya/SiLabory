@@ -33,17 +33,17 @@
                             href="/"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
-                            Layanan
+                            Berita
                         </a>
                         <a
-                            href="/"
+                            href="{{ route('users.list') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Peminjaman
                         </a>
                     @auth
                         <a
-                            href="{{ url('/dashboard') }}"
+                            href="{{ route('users.history') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Riwayat Peminjaman Saya
@@ -82,7 +82,7 @@
                                     </button>
                                 </x-slot>
 
-                                <x-slot name="content" class="-z-50">
+                                <x-slot name="content" class="z-50">
 
                                     <div class="pl-4 p-2 border-b border-slate-200">Hai, <span class="bg-green-300/50 px-1">{{ Auth::user()->name }}</span></div>
 
@@ -124,8 +124,8 @@
         </header>
         <main class="h-dvh mb-16 w-[90%] lg:w-full lg:max-w-4xl flex flex-col items-center">
             <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">Loans History</h1>
-            <div class="my-6 relative overflow-x-auto bg-primary shadow-xs rounded-base border border-default w-full">
-                <table class="w-full  text-sm text-left rtl:text-right text-body">
+            <div class="my-6 relative overflow-y-auto z-0 bg-primary shadow-xs rounded-base border border-default w-full">
+                <table class="w-full  text-sm text-left rtl:text-right text-body -z-10">
                     <thead class="text-sm text-body border-b border-default">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-medium">

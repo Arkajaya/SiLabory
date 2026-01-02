@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
         @endif
     </head>
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex px-6 lg:px-8 lg:pt-8 items-center lg:justify-center min-h-screen flex-col shadow-sm">
-        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden z-0">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-center gap-4 bg-[#53629E]/10 backdrop-blur-sm rounded-3xl">
                         <a
@@ -30,10 +30,10 @@
                             SILABORY
                         </a>
                         <a
-                            href="/"
+                            href="#blog"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
-                            Layanan
+                            Berita
                         </a>
                         <a
                             href="{{ route('users.list') }}"
@@ -82,7 +82,7 @@
                                     </button>
                                 </x-slot>
 
-                                <x-slot name="content" class="-z-50">
+                                <x-slot name="content">
 
                                     <div class="pl-4 p-2 border-b border-slate-200">Hai, <span class="bg-green-300/50 px-1">{{ Auth::user()->name }}</span></div>
 
@@ -122,6 +122,67 @@
                 </nav>
             @endif
         </header>
+        
+        <section class="relative isolate px-6 pt-5 lg:px-8  w-full">
+            <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"></div>
+                </div>
+                <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                <div class="text-center relative">
+                    <h1 class="text-5xl font-light text-balance text-[#473472] sm:text-7xl tracking-wider ">"<span class="font-semibold">Melayani</span> dengan Sepenuh Hati" <span class="text-lg align-middle absolute -right-5  italic">SIlabory et. al, 2025 </span></h1>
+                    <div class="mt-16 flex items-center justify-center gap-x-6">
+                        <a href="#" class="rounded-md bg-[#87BAC3] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Pinjam Sekarang</a>
+                        <a href="#" class="text-sm/6 font-semibold text-[#473472]">Hubungi Kami <span aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                </div>
+                <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="blog" class=" py-24 sm:py-16">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 ">
+                <div class="mx-auto max-w-2xl lg:mx-0">
+                <h2 class="text-4xl font-semibold text-pretty text-[#473472] tracking-wider sm:text-5xl">Berita Terkini</h2>
+                <p class="mt-2 text-lg/8 text-gray-400">Semua informasi terkait laboratorium selalu update disini</p>
+                </div>
+                @php $blogs = $blogs ?? collect(); @endphp
+                <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-8 sm:pt-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                @forelse($blogs as $blog)
+                <article class="flex max-w-xl flex-col items-start justify-between">
+                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
+                        <img src="{{ asset('images/dummy1.png') }}" alt="blog image" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
+                    </div>
+                    <div class="flex items-center gap-x-4 text-xs">
+                        <time datetime="{{ $blog->created_at?->toDateString() }}" class="text-gray-400">{{ $blog->created_at?->format('M d, Y') }}</time>
+                        <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">{{ $blog->author?->name ?? 'Admin Lab' }}</a>
+                    </div>
+                    <div class="group relative grow">
+                        <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
+                            <a href="{{ route('blogs.show', $blog->slug ?? $blog->id) }}">
+                                <span class="absolute inset-0"></span>
+                                {{ $blog->title }}
+                            </a>
+                        </h3>
+                        <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">{{ \Illuminate\Support\Str::limit(strip_tags($blog->content), 150) }}</p>
+                    </div>
+                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
+                        <div class="text-sm/6 ">
+                            <p class="font-semibold text-[#473472]/50">
+                                Writing by {{ $blog->author?->name ?? 'Admin Lab' }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+                @empty
+                <div class="col-span-3 text-center text-gray-500">Belum ada berita yang dipublikasikan.</div>
+                @endforelse
+                </div>
+            </div>
+        </section>
+
         <section id="#welcome" class="overflow-hidden py-14 sm:py-24">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
@@ -178,112 +239,6 @@
                 </div>
             </div>
         </section>
-        
-        <section id="#blog" class=" py-24 sm:py-16">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8 ">
-                <div class="mx-auto max-w-2xl lg:mx-0">
-                <h2 class="text-4xl font-semibold text-pretty text-[#473472] tracking-wider sm:text-5xl">Berita Terkini</h2>
-                <p class="mt-2 text-lg/8 text-gray-400">Semua informasi terkait laboratorium selalu update disini</p>
-                </div>
-                <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-8 sm:pt-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-03-16" class="text-gray-400">Mar 16, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Marketing</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        Boost your conversion rate
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6 ">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Admin Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-03-10" class="text-gray-400">Mar 10, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Sales</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        How to use search engine optimization to drive sales
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Optio cum necessitatibus dolor voluptatum provident commodi et. Qui aperiam fugiat nemo cumque.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Staff Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-02-12" class="text-gray-400">Feb 12, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Business</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        Improve your customer experience
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis. Nostrud sint anim sunt aliqua. Nulla eu labore irure incididunt velit cillum quis magna dolore.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Staff Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="relative isolate px-6 pt-5 lg:px-8  w-full">
-            <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"></div>
-                </div>
-                <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-                <div class="text-center relative">
-                    <h1 class="text-5xl font-light text-balance text-[#473472] sm:text-7xl tracking-wider">"<span class="font-semibold">Melayani</span> dengan Sepenuh Hati" <span class="text-lg align-middle absolute -right-5  italic">SIlabory et. al, 2025 </span></h1>
-                    <div class="mt-16 flex items-center justify-center gap-x-6">
-                        <a href="#" class="rounded-md bg-[#87BAC3] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Pinjam Sekarang</a>
-                        <a href="#" class="text-sm/6 font-semibold text-[#473472]">Hubungi Kami <span aria-hidden="true">→</span></a>
-                    </div>
-                </div>
-                </div>
-                <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"></div>
-                </div>
-            </div>
-        </section>
-
         
 
         <footer class=" w-full bg-[#222a4a] text-white rounded-t-3xl shadow-lg">

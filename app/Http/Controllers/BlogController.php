@@ -68,4 +68,10 @@ class BlogController extends Controller
         $blog->delete();
         return redirect()->route('blogs.index')->with('success', 'Blog deleted.');
     }
+
+    public function show(Blog $blog)
+    {
+        $blog->load('author');
+        return view('blogs.show', compact('blog'));
+    }
 }

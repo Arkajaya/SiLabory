@@ -57,7 +57,7 @@
                                             <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;">
                                                 @csrf
                                                 @method('PATCH')
-                                                <input type="hidden" name="status" value="responded" />
+                                                <input type="hidden" name="status" value="approved" />
                                                 <button class="text-green-500 hover:text-green-700" type="submit">Approve</button>
                                             </form>
                                             <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;margin-left:8px;">

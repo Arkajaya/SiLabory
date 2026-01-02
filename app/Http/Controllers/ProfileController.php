@@ -26,7 +26,16 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $data = $request->validated();
+
+        // handle uploaded card photo
+        if ($request->hasFile('card_identity_photo')) {
+            $file = $request->file('card_identity_photo');
+            $path = $file->store('cards', 'public');
+            $data['card_identity_photo'] = basename($path);
+        }
+
+        $request->user()->fill($data);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

@@ -33,17 +33,17 @@
                             href="/"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
-                            Layanan
+                            Berita
                         </a>
                         <a
-                            href="/"
+                            href="{{ route('users.list') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Peminjaman
                         </a>
                     @auth
                         <a
-                            href="{{ url('/dashboard') }}"
+                            href="{{ route('users.history') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Riwayat Peminjaman Saya
@@ -125,7 +125,7 @@
         <main class="h-dvh mb-16 ">
             <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">List Items</h1>
             <!-- component -->
-            <div class="my-8 max-h-[86dvh] overflow-y-auto">
+            <div class="my-8 max-h-[86dvh] overflow-y-hidden hover:overflow-y-auto lg:w-[800px] w-[335px]">
                 <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($items as $it)
                     <li class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">

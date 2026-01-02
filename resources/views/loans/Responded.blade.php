@@ -2,7 +2,7 @@
     <div class="py-6 h-dvh">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">Loans Submited</h1>
+                <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">Loans Responded</h1>
             </div>
             <hr class="my-4">
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
@@ -41,26 +41,59 @@
                                         </td>
                                         <td class="px-6 py-4">{{ $loan->return_date?->format('Y-m-d') ?? '-' }}</td>
                                         <td class="px-6 py-4 text-center">
-                                            <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="returned" />
-                                                <button class="text-green-500 hover:text-green-700" type="submit">✓</button>
-                                            </form>
-                                            <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;margin-left:8px;">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="not_returned" />
-                                                <button class="text-red-500 hover:text-red-700" type="submit">✕</button>
-                                            </form>
+                                            @php
+                                                $status = strtolower($loan->status ?? '');
+                                            @endphp
+
+                                            {{-- If already marked returned, show badge --}}
+                                            @if(in_array($status, ['returned','kembali']))
+                                                <span class="text-green-600 font-semibold">Returned</span>
+
+                                            {{-- If loan is responded/borrowed, allow marking returned or contacting borrower --}}
+                                            @elseif(in_array($status, ['responded','dipinjam','borrowed','dipinjam']))
+                                                <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="returned" />
+                                                    <button class="text-green-500 hover:text-green-700" type="submit">✓</button>
+                                                </form>
+
+                                                {{-- Contact button: prefer phone/WA, fallback to email link --}}
+
+                                            @else
+                                                <span class="text-gray-500">-</span>
+                                            @endif
                                         </td>
+
                                         <td class="px-6 py-4">
+                                            {{-- Replace Edit with Extend (open modal to set new return date) --}}
                                             <x-primary-button
                                                 x-data
-                                                x-on:click="$dispatch('open-modal', 'edit-loan-{{ $loan->id }}')" class="bg-none text-orange-500"
+                                                x-on:click="$dispatch('open-modal', 'extend-loan-{{ $loan->id }}')" class="bg-none text-orange-500"
                                             >
-                                                Edit
+                                                Extend
                                             </x-primary-button>
+
+                                            {{-- Extend modal --}}
+                                            <x-modal name="extend-loan-{{ $loan->id }}" :show="false">
+                                                <h2 class=" text-white shadow-md uppercase p-6 bg-orange-400 text-xl font-semibold tracking-wider">
+                                                    Extend Loan #{{ $loan->id }}
+                                                </h2>
+                                                <div class="p-6">
+                                                    <form method="POST" action="{{ route('loans.update', $loan->id) }}" class="mt-6 space-y-6">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <div>
+                                                            <x-input-label class="mb-2" value="New Return Date" id="return_date" />
+                                                            <x-text-input type="date" name="return_date" class="w-full" value="{{ old('return_date', optional($loan->return_date)->format('Y-m-d')) }}" required />
+                                                        </div>
+                                                        <div class="flex justify-end mt-6">
+                                                            <x-secondary-button x-on:click="$dispatch('close-modal', 'extend-loan-{{ $loan->id }}')">Cancel</x-secondary-button>
+                                                            <x-primary-button class="ml-3 bg-orange-400">Extend</x-primary-button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </x-modal>
                                         </td>
                                     </tr>
                                 @endforeach

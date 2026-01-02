@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -47,6 +47,40 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="nim" :value="__('NIM')" />
+            <x-text-input id="nim" name="nim" type="text" class="mt-1 block w-full" :value="old('nim', $user->nim)" />
+            <x-input-error class="mt-2" :messages="$errors->get('nim')" />
+        </div>
+
+        <div>
+            <x-input-label for="study_program" :value="__('Study Program')" />
+            <x-text-input id="study_program" name="study_program" type="text" class="mt-1 block w-full" :value="old('study_program', $user->study_program)" />
+            <x-input-error class="mt-2" :messages="$errors->get('study_program')" />
+        </div>
+
+        <div>
+            <x-input-label for="card_identity_photo" :value="__('Card Identity Photo')" />
+            @if($user->card_identity_photo)
+                <div class="mb-2 flex items-center gap-4">
+                    <img id="card-preview-img" src="{{ asset('storage/cards/'.$user->card_identity_photo) }}" alt="Card" class="w-24 h-24 object-cover rounded-md border" />
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Preview size</label>
+                        <select id="card-size-select" class="border rounded px-2 py-1 text-sm">
+                            <option value="w-16 h-16 object-cover rounded-md border">Small</option>
+                            <option value="w-24 h-24 object-cover rounded-md border" selected>Medium</option>
+                            <option value="w-40 h-40 object-cover rounded-md border">Large</option>
+                        </select>
+                    </div>
+                </div>
+            @else
+                <img id="card-preview-img" src="{{ asset('images/dummy1.png') }}" alt="Card" class="w-24 h-24 object-cover rounded-md border mb-2" />
+            @endif
+
+            <input id="card_identity_photo" name="card_identity_photo" type="file" class="block w-full" accept="image/*" />
+            <x-input-error class="mt-2" :messages="$errors->get('card_identity_photo')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -62,3 +96,16 @@
         </div>
     </form>
 </section>
+
+<script>
+    // simple size selector for card preview
+    document.addEventListener('DOMContentLoaded', function(){
+        const select = document.getElementById('card-size-select');
+        const img = document.getElementById('card-preview-img');
+        if(select && img){
+            select.addEventListener('change', function(){
+                img.className = this.value; // value contains tailwind classes
+            });
+        }
+    });
+</script>

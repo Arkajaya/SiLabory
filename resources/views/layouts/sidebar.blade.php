@@ -97,12 +97,12 @@
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Loans</span>
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
                 </button>
-                <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                <ul id="dropdown-example" class="@if(request()->routeIs('loans.*')) py-2 space-y-2 @else hidden py-2 space-y-2 @endif">
                     <li>
-                        <a href="{{ route('loans.submited') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('items.*') ? 'bg-slate-100' : '' }}">Loans Submitted</a>
+                        <a href="{{ route('loans.submited') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('loans.submited') ? 'bg-slate-100' : '' }}">Loans Submitted</a>
                     </li>
                     <li>
-                        <a href="{{ route('loans.responded') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('items.*') ? 'bg-slate-100' : '' }}">Loans Responded</a>
+                        <a href="{{ route('loans.responded') }}" class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group {{ request()->routeIs('loans.responded') ? 'bg-slate-100' : '' }}">Loans Responded</a>
                     </li>
                 </ul>
             </li>
