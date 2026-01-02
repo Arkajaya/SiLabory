@@ -32,11 +32,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-        // user
+    // user
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/items', [LoanController::class, 'list'])->name('users.list');
+    Route::post('/users/items', [LoanController::class, 'store'])->name('users.store.loan');
+    Route::get('/users/history', [LoanController::class, 'history'])->name('users.history');
     
     // item
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');

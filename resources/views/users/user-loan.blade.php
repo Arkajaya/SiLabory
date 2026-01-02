@@ -36,14 +36,14 @@
                             Layanan
                         </a>
                         <a
-                            href="{{ route('users.list') }}"
+                            href="/"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Peminjaman
                         </a>
                     @auth
                         <a
-                            href="{{ route('users.history') }}"
+                            href="{{ url('/dashboard') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-sm leading-normal rounded-xl"
                         >
                             Riwayat Peminjaman Saya
@@ -122,168 +122,87 @@
                 </nav>
             @endif
         </header>
-        <section id="#welcome" class="overflow-hidden py-14 sm:py-24">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-                <div class="lg:pt-4 lg:pr-8">
-                    <div class="lg:max-w-lg">
-                    <h2 class="text-base/7 font-semibold text-indigo-400">Mudah dan Cepat</h2>
-                    <p class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-black sm:text-4xl">Kemudahan dalam Penggunaan</p>
-                    <p class="mt-6 text-sm/8 text-slate-400"><span class="text-lg font-semibold text-white bg-[#473472]/60 px-0.5 rounded-sm">SILABORY</span> <span class="tracking-wider">(System Manajemen Lab Inventory)</span>
-                        , Kelola aktivitas Anda dengan mudah, baik sebagai pengguna maupun admin. <span class="bg-teal-400/20 px-0.5 font-semibold text-black">Pantau, kelola, dan optimalkan</span> semua proses hanya dalam satu platform yang aman dan responsif.
-                    </p>
-                    <dl class="mt-10 max-w-xl space-y-8 text-base/7 text-gray-400 lg:max-w-none">
-                        <div class="relative pl-9">
-                        <dt class="inline font-semibold text-[#473472] tracking-wide">
-                            <svg version="1.1" id="fi_726546" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" class="w-5 h-5 absolute top-1 left-1 size-5 text-indigo-400">
-                                <g>
-                                    <g>
-                                        <polygon points="320,92.272 320,92.144 415.808,135.056 512,98.992 256,2.992 0,98.992 256,194.992 351.808,159.056 256,119.568 
-                                            256,119.472 		"></polygon>
-                                    </g>
-                                </g>
-                                <g>
-                                    <g>
-                                        <path d="M0,130.992v288l240,90.016v-288L0,130.992z M128,420.048l-64-24v-34.144l64,24V420.048z"></path>
-                                    </g>
-                                </g>
-                                <g>
-                                    <g>
-                                        <polygon points="416,166.992 416,247.152 352,271.152 352,190.992 272,221.008 272,509.008 512,418.992 512,130.992"></polygon>
-                                    </g>
-                                </g>
-                            </svg>
-                            Manajemen Inventaris, 
-                        </dt>
-                        <dd class="inline">Kelola data barang secara terpusat, mulai dari kategori, stok, kondisi barang, hingga riwayat penggunaan dengan sistem yang rapi dan terstruktur</dd>
-                        </div>
-                        <div class="relative pl-9">
-                        <dt class="inline font-semibold text-[#473472] tracking-wide">
-                            <svg id="fi_11274609" class="w-5 h-5 absolute top-1 left-1 size-5 text-indigo-400" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" ><path d="m138.884 307.43a13.821 13.821 0 0 1 13.807-13.806h226.72v27.613h-226.72a13.822 13.822 0 0 1 -13.807-13.807zm343.055 41.878c-4.8-8.024-15-13.174-27-6.591-12.155 6.672-26.842 14.971-42.393 23.758-19.3 10.9-39.166 22.129-54.551 30.425.031.34.07.676.077 1.028.187 8.7-7.114 20.483-16.621 26.827-7.169 4.784-18.084 6.572-30.393 6.572-33.652 0-77.735-13.36-84.264-15.4a7 7 0 0 1 4.173-13.364c31.223 9.743 86.72 21.221 102.713 10.546 6.25-4.171 9.885-11.142 10.354-14.116-47.29-28.146-117.552-40.334-138.111-43.418-29.049-4.356-87.019 18.429-105.785 26.256l40.1 75.09c16.031-3.578 37.106-6.967 98.445 16.707 64.188 24.773 138.193-27.55 197.658-69.591 12.816-9.061 24.922-17.621 36.368-25.051 14.347-9.307 13.938-21.805 9.23-29.678zm-400.474 27.274a3.531 3.531 0 0 0 -2.1-1.712 3.6 3.6 0 0 0 -1.039-.153 3.5 3.5 0 0 0 -1.668.423l-21.919 11.754a3.559 3.559 0 0 0 -1.452 4.812l48.941 91.637a3.554 3.554 0 0 0 4.806 1.443l21.918-11.754a3.558 3.558 0 0 0 1.453-4.813zm64.226-355.243a13.4 13.4 0 0 0 -6.807 11.755v250.215a27.57 27.57 0 0 1 6.807-2.791zm233.72 258.285h-219.72v-260.124h219.72zm-42.635-77.087a7 7 0 0 0 -7-7h-124.4a7 7 0 0 0 0 14h124.4a7 7 0 0 0 7-7zm0-32.325a7 7 0 0 0 -7-7h-124.4a7 7 0 0 0 0 14h124.4a7 7 0 0 0 7-7zm0-32.325a7 7 0 0 0 -7-7h-124.4a7 7 0 0 0 0 14h124.4a7 7 0 0 0 7-7zm0-32.325a7 7 0 0 0 -7-7h-124.4a7 7 0 0 0 0 14h124.4a7 7 0 0 0 7-7zm-305.076 308.228a8.625 8.625 0 0 0 -3.565 11.651l33.275 62.476a8.628 8.628 0 0 0 11.656 3.572l13.74-7.3-41.466-77.645z"></path></svg>
-                            Peminjaman Barang / Ruangan,
-                        </dt>
-                        <dd class="inline">Sistem persetujuan berbasis peran (Admin, Asisten, Pengguna) untuk memastikan setiap peminjaman berjalan sesuai aturan dan kebijakan.</dd>
-                        </div>
-                        <div class="relative pl-9">
-                        <dt class="inline font-semibold text-[#473472] tracking-wide">
-                            <svg id="fi_5537974" enable-background="new 0 0 512 512" class="w-5 h-5 absolute top-1 left-1 size-5 text-indigo-400" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m76.124 66.847h21.848v363.306c0 15.988 13.011 29 28.999 29h273.056v21.847c0 8.262-6.738 15-15 15h-308.903c-8.262 0-15-6.738-15-15v-399.153c.001-8.261 6.739-15 15-15zm50.848-50.847c-8.262 0-15 6.738-15 15v399.153c0 8.262 6.738 15 15 15h308.904c8.262 0 15-6.738 15-15v-330.372h-54.781c-15.988 0-29-13.011-29-29v-54.781zm41.952 94.826h129c3.866 0 7-3.134 7-7s-3.134-7-7-7h-129c-3.866 0-7 3.134-7 7 0 3.865 3.134 7 7 7zm0 33.75h73.5c3.866 0 7-3.134 7-7s-3.134-7-7-7h-73.5c-3.866 0-7 3.134-7 7 0 3.865 3.134 7 7 7zm212.17-73.794c0 8.262 6.738 15 15 15h53.481c-.727-1.593-1.759-3.06-3.093-4.394l-60.994-60.994c-1.334-1.334-2.8-2.366-4.393-3.093v53.481zm-207.17 234.521c-2.754 0-5 2.246-5 5v62.808c0 2.754 2.246 5 5 5h25.102c2.754 0 5-2.246 5-5v-62.808c0-2.754-2.246-5-5-5zm63.299-31.675c-2.754 0-5 2.246-5 5v94.483c0 2.754 2.246 5 5 5h25.102c2.754 0 5-2.246 5-5 0-31.494 0-62.988 0-94.483 0-2.754-2.246-5-5-5-8.367 0-16.734 0-25.102 0zm63.3-31.676c-2.754 0-5 2.246-5 5v126.158c0 2.754 2.246 5 5 5h25.102c2.754 0 5-2.246 5-5 0-42.053 0-84.105 0-126.158 0-2.754-2.246-5-5-5-8.368 0-16.735 0-25.102 0zm63.3-31.675c-2.754 0-5 2.246-5 5v157.833c0 2.754 2.246 5 5 5h25.102c2.754 0 5-2.246 5-5v-157.833c0-2.754-2.246-5-5-5zm-40.033-53.215 10.833-2.811c-14.368 21.521-34.459 40.767-58.826 56.253-28.882 18.356-63.694 31.395-102.049 36.673-3.82.513-6.501 4.027-5.988 7.848s4.027 6.502 7.848 5.988c40.474-5.57 77.207-19.329 107.682-38.697 25.009-15.894 45.855-35.591 61.162-57.676l.537 8.148c.241 3.851 3.559 6.777 7.41 6.535s6.777-3.559 6.535-7.41l-1.939-29.306c-.346-5.23-5.791-7.076-10.748-5.789l-25.956 6.736c-3.73.966-5.97 4.774-5.004 8.504.965 3.73 4.773 5.971 8.503 5.004z" fill-rule="evenodd"></path></svg>
-                            Monitoring & Laporan.
-                        </dt>
-                        <dd class="inline">Pantau aktivitas peminjaman dan ketersediaan barang secara real-time, serta dapatkan laporan yang membantu pengambilan keputusan.</dd>
-                        </div>
-                    </dl>
-                    </div>
-                </div>
-                <div class="ml-20 w-[2000px] h-[800px]  bg-contain bg-no-repeat bg-left rounded-md shadow-md shadow-sky-300 hover:-translate-x-1 hover:-translate-y-1 transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-sky-300" style="background-image: url('{{ asset('images/icon1.png') }}')"></div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="#blog" class=" py-24 sm:py-16">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8 ">
-                <div class="mx-auto max-w-2xl lg:mx-0">
-                <h2 class="text-4xl font-semibold text-pretty text-[#473472] tracking-wider sm:text-5xl">Berita Terkini</h2>
-                <p class="mt-2 text-lg/8 text-gray-400">Semua informasi terkait laboratorium selalu update disini</p>
-                </div>
-                <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-8 sm:pt-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-03-16" class="text-gray-400">Mar 16, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Marketing</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        Boost your conversion rate
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6 ">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Admin Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-03-10" class="text-gray-400">Mar 10, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Sales</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        How to use search engine optimization to drive sales
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Optio cum necessitatibus dolor voluptatum provident commodi et. Qui aperiam fugiat nemo cumque.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Staff Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                <article class="flex max-w-xl flex-col items-start justify-between">
-                    <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="icon1" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
-                    </div>
-                    <div class="flex items-center gap-x-4 text-xs">
-                    <time datetime="2020-02-12" class="text-gray-400">Feb 12, 2020</time>
-                    <a href="#" class="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800">Business</a>
-                    </div>
-                    <div class="group relative grow">
-                    <h3 class="mt-3 text-lg/6 font-semibold text-[#53629E] group-hover:text-[#87BAC3]">
-                        <a href="#">
-                        <span class="absolute inset-0"></span>
-                        Improve your customer experience
-                        </a>
-                    </h3>
-                    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-400">Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis. Nostrud sint anim sunt aliqua. Nulla eu labore irure incididunt velit cillum quis magna dolore.</p>
-                    </div>
-                    <div class="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                    <div class="text-sm/6">
-                        <p class="font-semibold text-[#473472]/50">
-                            Writing by Staff Lab
-                        </p>
-                    </div>
-                    </div>
-                </article>
-                </div>
-            </div>
-        </section>
+        <main class="h-dvh mb-16 w-[90%] lg:w-full lg:max-w-4xl flex flex-col items-center">
+            <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">Loans History</h1>
+            <div class="my-6 relative overflow-x-auto bg-primary shadow-xs rounded-base border border-default w-full">
+                <table class="w-full  text-sm text-left rtl:text-right text-body">
+                    <thead class="text-sm text-body border-b border-default">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Item Name
+                            </th>
+                            <th scope="col" class="px-6 py-3 bg-neutral-secondary-soft font-medium">
+                                Loan Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 bg-neutral-secondary-soft font-medium">
+                                Return Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($loans as $loan)
+                        <tr class="border-b border-default">
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap bg-neutral-secondary-soft align-top">
+                                <div class="text-sm text-gray-600 mt-2">
+                                    @foreach($loan->loanDetails as $detail)
+                                        <div class="mb-1">{{ $detail->item->name ?? '—' }} &times; <span class="font-bold">{{ $detail->quantity }}</span></div>
+                                    @endforeach
+                                </div>
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $loan->loan_date?->format('Y-m-d') }}
+                            </td>
+                            <td class="px-6 py-4 bg-neutral-secondary-soft">
+                                {{ $loan->return_date?->format('Y-m-d') ?? '-' }}
+                            </td>
+                            <td class="px-6 py-4">
+                                @php
+                                    $statusText = $loan->status ?? 'unknown';
+                                    $isApproved = in_array(strtolower($statusText), ['approved','disetujui','diterima']);
+                                @endphp
 
-        <section class="relative isolate px-6 pt-5 lg:px-8  w-full">
-            <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"></div>
-                </div>
-                <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-                <div class="text-center relative">
-                    <h1 class="text-5xl font-light text-balance text-[#473472] sm:text-7xl tracking-wider">"<span class="font-semibold">Melayani</span> dengan Sepenuh Hati" <span class="text-lg align-middle absolute -right-5  italic">SIlabory et. al, 2025 </span></h1>
-                    <div class="mt-16 flex items-center justify-center gap-x-6">
-                        <a href="#" class="rounded-md bg-[#87BAC3] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Pinjam Sekarang</a>
-                        <a href="#" class="text-sm/6 font-semibold text-[#473472]">Hubungi Kami <span aria-hidden="true">→</span></a>
-                    </div>
-                </div>
-                </div>
-                <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-                <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"></div>
-                </div>
-            </div>
-        </section>
+                                @if($isApproved)
+                                    <button x-data x-on:click="$dispatch('open-modal', 'loan-approved-{{ $loan->id }}')" class="px-3 py-1 rounded-md bg-green-500 text-white font-medium">
+                                        Approved
+                                    </button>
 
+                                    <x-modal name="loan-approved-{{ $loan->id }}" :show="false">
+                                        <h2 class="text-white shadow-md uppercase p-6 bg-sky-400 text-xl font-semibold tracking-wider">Loan Approved — #{{ $loan->id }}</h2>
+                                        <div class="p-6">
+                                            <p class="mb-2"><strong>Loan Date:</strong> {{ $loan->loan_date?->format('Y-m-d') }}</p>
+                                            <p class="mb-2"><strong>Return Date:</strong> {{ $loan->return_date?->format('Y-m-d') ?? '-' }}</p>
+                                            <p class="mb-4"><strong>Approved At:</strong> {{ $loan->updated_at?->format('Y-m-d H:i') }}</p>
+
+                                            <h3 class="font-semibold mb-2">Items</h3>
+                                            <ul class="mb-4">
+                                                @foreach($loan->loanDetails as $detail)
+                                                    <li class="mb-1">{{ $detail->item->name ?? '—' }} — Quantity: {{ $detail->quantity }}</li>
+                                                @endforeach
+                                            </ul>
+
+                                            <div class="flex justify-end">
+                                                <x-secondary-button x-on:click="$dispatch('close-modal', 'loan-approved-{{ $loan->id }}')">Close</x-secondary-button>
+                                            </div>
+                                        </div>
+                                    </x-modal>
+                                @else
+                                    <span class="px-3 py-1 rounded-md bg-yellow-400 text-white font-medium">{{ ucfirst($statusText) }}</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-600">You have no loans yet.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
         
 
         <footer class=" w-full bg-[#222a4a] text-white rounded-t-3xl shadow-lg">
@@ -360,7 +279,6 @@
             </div>
             </div>
         </footer>
-
 
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
