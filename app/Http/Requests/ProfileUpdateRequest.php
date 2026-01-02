@@ -25,6 +25,9 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'nim' => ['nullable','string','max:64'],
+            'study_program' => ['nullable','string','max:255'],
+            'card_identity_photo' => ['nullable','image','max:2048'],
         ];
     }
 }

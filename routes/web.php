@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
@@ -11,7 +12,8 @@ use App\Http\Controllers\BlogController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $blogs = Blog::where('status', 'published')->orderBy('created_at', 'desc')->take(3)->get();
+    return view('welcome', compact('blogs'));
 })->name('home');
 
 
@@ -55,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
     // blog
     Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+    Route::get('/blogs/{blog:slug}', [BlogController::class, 'show'])->name('blogs.show');
     Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
     Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');

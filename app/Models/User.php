@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nim',
+        'study_program',
+        'card_identity_photo',
     ];
 
     /**

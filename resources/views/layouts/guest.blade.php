@@ -16,17 +16,58 @@
     </head>
     <body class="font-sans text-gray-900 bg-sky-100/30 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0  bg-sky-300/40 dark:from-gray-900">
-            <div>
+            {{-- <div>
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>
-            </div>
+            </div> --}}
             
             <x-button-back></x-button-back>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/60 backdrop-blur-md  shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full ">
                 {{ $slot }}
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                @if(session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: {!! json_encode(session('success')) !!},
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                @endif
+
+                @if(session('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: {!! json_encode(session('error')) !!},
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                @endif
+
+                @if($errors->any())
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation error',
+                        text: {!! json_encode($errors->first()) !!},
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                    });
+                @endif
+            });
+        </script>
+
     </body>
 </html>
+
