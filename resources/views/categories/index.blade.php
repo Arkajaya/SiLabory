@@ -13,8 +13,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
+                    <div class="flex items-center justify-between mb-4">
+                        <input id="search-categories" type="text" placeholder="Cari kategori..." class="border rounded px-3 py-2 w-64 text-sm" />
+                        <div></div>
+                    </div>
                     <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
+                    <table id="categories-table" class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
                             <thead class="text-sm font-bold  text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 font-medium">
@@ -31,37 +35,8 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($categories as $category)
-                                    <tr class="bg-neutral-primary border-b border-default">
-                                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                                            {{ $categories->firstItem() + $loop->index }}
-                                        </th>
-                                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                                            {{ $category->name }}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <div class="max-h-24 overflow-y-auto">
-                                                {{ $category->description }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 flex justify-center">
-                                        <x-primary-button
-                                            x-data
-                                            x-on:click="$dispatch('open-modal', 'edit-category-{{ $category->id }}')" class="bg-none text-orange-500"
-                                            >
-                                            Edit
-                                        </x-primary-button>
-                                        <span class="mx-2">|</span>
-                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;" class="delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-700 ml-2">Delete</button>
-                                        </form>
-                                        
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            <tbody id="categories-tbody">
+                                @include('categories._rows')
                             </tbody>
                         </table>
                         </div>
@@ -149,3 +124,19 @@
     @endforeach
 
 </x-app-layout>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('search-categories');
+        let timer = null;
+        input.addEventListener('input', function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                const q = encodeURIComponent(input.value || '');
+                fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(r => r.text())
+                    .then(html => { document.getElementById('categories-tbody').innerHTML = html; });
+            }, 300);
+        });
+    });
+    </script>

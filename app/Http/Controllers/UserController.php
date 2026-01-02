@@ -10,9 +10,25 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(6);
+        $q = $request->query('q');
+
+        $query = User::orderBy('created_at', 'desc');
+        if (! empty($q)) {
+            $query->where(function($b) use ($q) {
+                $b->where('name', 'like', '%' . $q . '%')
+                  ->orWhere('email', 'like', '%' . $q . '%')
+                  ->orWhere('nim', 'like', '%' . $q . '%');
+            });
+        }
+
+        $users = $query->paginate(6);
+
+        if ($request->ajax()) {
+            return view('users._rows', compact('users'))->render();
+        }
+
         $roles = Role::all();
         return view('users.index', compact('users', 'roles'));
     }

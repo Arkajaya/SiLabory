@@ -8,8 +8,12 @@
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
+                    <div class="flex items-center justify-between mb-4">
+                        <input id="search-users" type="text" placeholder="Cari user..." class="border rounded px-3 py-2 w-64 text-sm" />
+                        <div></div>
+                    </div>
                     <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto w-full text-sm text-left">
+                    <table id="users-table" class="min-w-full table-auto w-full text-sm text-left">
                         <thead>
                             <tr class="font-bold">
                                 <th class="px-4 py-2">No</th>
@@ -19,24 +23,8 @@
                                 <th class="px-4 py-2 text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($users as $user)
-                                <tr class="border-t">
-                                    <td class="px-4 py-2">{{ $users->firstItem() + $loop->index }}</td>
-                                    <td class="px-4 py-2"><a href="{{ route('user.detail', ['user_id' => $user->id]) }}">{{ $user->name }}</a></td>
-                                    <td class="px-4 py-2">{{ $user->email }}</td>
-                                    <td class="px-4 py-2">{{ $user->nim ?? '-' }}</td>
-                                    <td class="px-4 py-2 flex justify-start items-center">
-                                        <x-primary-button x-data x-on:click="$dispatch('open-modal', 'edit-user-{{ $user->id }}')" class="py-1 px-2">Edit</x-primary-button>
-                                        <span class="mx-2">|</span>
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="ml-2 text-red-500">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        <tbody id="users-tbody">
+                            @include('users._rows', ['users' => $users])
                         </tbody>
                     </table>
                     </div>
@@ -110,3 +98,19 @@
         </x-modal>
     @endforeach
 </x-app-layout>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('search-users');
+    let timer = null;
+    input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            const q = encodeURIComponent(input.value || '');
+            fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => { document.getElementById('users-tbody').innerHTML = html; });
+        }, 300);
+    });
+});
+</script>

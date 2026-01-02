@@ -13,8 +13,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
+                    <div class="flex items-center justify-between mb-4">
+                        <input id="search-loans" type="text" placeholder="Cari peminjaman..." class="border rounded px-3 py-2 w-64 text-sm" />
+                        <div></div>
+                    </div>
                     <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
+                    <table id="loans-table" class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
                             <thead class="text-sm font-bold  text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 font-medium">No</th>
@@ -25,33 +29,8 @@
                                     <th scope="col" class="px-6 py-3 font-medium text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($loans as $loan)
-                                    <tr class="bg-neutral-primary border-b border-default">
-                                        <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                                            {{ $loans->firstItem() + $loop->index }}
-                                        </th>
-                                        <td class="px-6 py-4">{{ $loan->user?->name }}</td>
-                                        <td class="px-6 py-4">{{ $loan->loan_date->format('Y-m-d') }}</td>
-                                        <td class="px-6 py-4">{{ $loan->return_date?->format('Y-m-d') ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $loan->status }}</td>
-                                        <td class="px-6 py-4">
-                                            <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" style="display:inline;" class="delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-2">Delete</button>
-                                            </form>
-                                            <span class="mx-2">|</span>
-                                            <x-primary-button
-                                                x-data
-                                            x-on:click="$dispatch('open-modal', 'edit-loan-{{ $loan->id }}')" class="bg-none text-orange-500"
-                                            >
-                                                Edit
-                                            </x-primary-button>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            <tbody id="loans-tbody">
+                                @include('loans._rows')
                             </tbody>
                         </table>
                         </div>
@@ -170,3 +149,19 @@
     @endforeach
 
 </x-app-layout>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('search-loans');
+    let timer = null;
+    input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            const q = encodeURIComponent(input.value || '');
+            fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => { document.getElementById('loans-tbody').innerHTML = html; });
+        }, 300);
+    });
+});
+</script>

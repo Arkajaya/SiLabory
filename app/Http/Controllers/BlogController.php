@@ -9,10 +9,21 @@ use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::with('author')->orderBy('created_at', 'desc')->paginate(6);
+        $q = $request->query('q');
+        $query = Blog::with('author')->orderBy('created_at', 'desc');
+        if (! empty($q)) {
+            $query->where('title', 'like', '%'.$q.'%')->orWhere('content', 'like', '%'.$q.'%');
+        }
+
+        $blogs = $query->paginate(6);
         $users = User::all();
+
+        if ($request->ajax()) {
+            return view('blogs._rows', compact('blogs'))->render();
+        }
+
         return view('blogs.index', compact('blogs', 'users'));
     }
 
