@@ -8,8 +8,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
 
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
+                    <div class="flex items-center justify-between mb-4">
+                        <input id="search-loans-responded" type="text" placeholder="Cari peminjaman..." class="border rounded px-3 py-2 w-64 text-sm" />
+                        <div></div>
+                    </div>
                     <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
+                    <table id="loans-responded-table" class="min-w-full table-auto w-full text-sm text-left rtl:text-right text-body">
                             <thead class="text-sm font-bold  text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 font-medium">No</th>
@@ -108,11 +112,24 @@
                             {{ $loans->links() }}
                         </div>
                     </div>
+                    </x-app-layout>
                 </div>
             </div>
+
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const input = document.getElementById('search-loans-responded');
+                        let timer = null;
+                        input.addEventListener('input', function () {
+                            clearTimeout(timer);
+                            timer = setTimeout(() => {
+                                const q = encodeURIComponent(input.value || '');
+                                fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                                    .then(r => r.text())
+                                    .then(html => { document.getElementById('loans-responded-tbody').innerHTML = html; });
+                            }, 300);
+                        });
+                    });
+                    </script>
         </div>
     </div>
-
-
-
-</x-app-layout>

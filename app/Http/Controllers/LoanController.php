@@ -14,33 +14,66 @@ use Illuminate\Support\Facades\Storage;
 class LoanController extends Controller
 {
 
-    public function indexSubmited()
+    public function indexSubmited(Request $request)
     {
-        $loans = Loan::with(['user', 'loanDetails.item'])
-            ->where('status', 'submitted')
-            ->orderBy('loan_date', 'desc')
-            ->paginate(6);
+        $q = $request->query('q');
+        $query = Loan::with(['user', 'loanDetails.item'])->where('status', 'submitted');
+        if (! empty($q)) {
+            $query->whereHas('user', function($u) use ($q) {
+                $u->where('name', 'like', '%'.$q.'%')->orWhere('email', 'like', '%'.$q.'%');
+            })->orWhere('id', 'like', '%'.$q.'%');
+        }
+
+        $loans = $query->orderBy('loan_date', 'desc')->paginate(6);
         $users = User::all();
         $items = Item::where('stock', '>', 0)->get();
+
+        if ($request->ajax()) {
+            return view('loans._rows_submited', compact('loans'))->render();
+        }
+
         return view('loans.submited', compact('loans', 'users', 'items'));
     }
 
-    public function indexResponded()
+    public function indexResponded(Request $request)
     {
-        $loans = Loan::with(['user', 'loanDetails.item'])
-            ->whereIn('status', ['responded', 'approved', 'rejected'])
-            ->orderBy('loan_date', 'desc')
-            ->paginate(6);
+        $q = $request->query('q');
+        $query = Loan::with(['user', 'loanDetails.item'])->whereIn('status', ['responded', 'approved', 'rejected']);
+        if (! empty($q)) {
+            $query->whereHas('user', function($u) use ($q) {
+                $u->where('name', 'like', '%'.$q.'%')->orWhere('email', 'like', '%'.$q.'%');
+            })->orWhere('id', 'like', '%'.$q.'%')->orWhere('status', 'like', '%'.$q.'%');
+        }
+
+        $loans = $query->orderBy('loan_date', 'desc')->paginate(6);
         $users = User::all();
         $items = Item::where('stock', '>', 0)->get();
+
+        if ($request->ajax()) {
+            return view('loans._rows_responded', compact('loans'))->render();
+        }
+
         return view('loans.Responded', compact('loans', 'users', 'items'));
     }
 
     public function list()
     {
-        $items = Item::where('stock', '>', 0)
-            ->orderBy('created_at', 'desc')
-            ->paginate(6);
+        // list available items for users with optional search
+        // accepts `q` query parameter and returns partial for AJAX
+        $q = request()->query('q');
+        $query = Item::where('stock', '>', 0)->orderBy('created_at', 'desc');
+        if (! empty($q)) {
+            $query->where(function($b) use ($q) {
+                $b->where('name', 'like', '%'.$q.'%')
+                  ->orWhere('condition', 'like', '%'.$q.'%');
+            });
+        }
+
+        $items = $query->paginate(6);
+
+        if (request()->ajax()) {
+            return view('users._items_rows', compact('items'))->render();
+        }
 
         return view('users.loan-show', compact('items'));
     }
@@ -182,9 +215,19 @@ class LoanController extends Controller
      */
     public function activities(Request $request)
     {
-        $loans = Loan::with(['user', 'loanDetails.item'])
-            ->orderBy('updated_at', 'desc')
-            ->paginate(6);
+        $q = $request->query('q');
+        $query = Loan::with(['user', 'loanDetails.item']);
+        if (! empty($q)) {
+            $query->whereHas('user', function($u) use ($q) {
+                $u->where('name', 'like', '%'.$q.'%')->orWhere('email', 'like', '%'.$q.'%');
+            })->orWhere('id', 'like', '%'.$q.'%')->orWhere('status', 'like', '%'.$q.'%');
+        }
+
+        $loans = $query->orderBy('updated_at', 'desc')->paginate(6);
+
+        if ($request->ajax()) {
+            return view('loans._rows', compact('loans'))->render();
+        }
 
         return view('activities.index', compact('loans'));
     }

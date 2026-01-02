@@ -10,9 +10,27 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::with('category')->orderBy('created_at', 'desc')->paginate(6);
+        $q = $request->query('q');
+
+        $query = Item::with('category')->orderBy('created_at', 'desc');
+        if (! empty($q)) {
+            $query->where(function($builder) use ($q) {
+                $builder->where('name', 'like', '%' . $q . '%')
+                    ->orWhere('code', 'like', '%' . $q . '%')
+                    ->orWhereHas('category', function($c) use ($q) {
+                        $c->where('name', 'like', '%' . $q . '%');
+                    });
+            });
+        }
+
+        $items = $query->paginate(6);
+
+        if ($request->ajax()) {
+            return view('items._rows', compact('items'))->render();
+        }
+
         $categories = Category::all();
         return view('items.index', compact('items', 'categories'));
     }

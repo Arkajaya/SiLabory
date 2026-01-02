@@ -8,11 +8,23 @@ use App\Models\Item;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::orderBy('created_at', 'desc')->paginate(6);
+        $q = $request->query('q');
+        $query = Category::orderBy('created_at', 'desc');
+        if (! empty($q)) {
+            $query->where('name', 'like', '%' . $q . '%')
+                  ->orWhere('description', 'like', '%' . $q . '%');
+        }
+
+        $categories = $query->paginate(6);
+
+        if ($request->ajax()) {
+            return view('categories._rows', compact('categories'))->render();
+        }
+
         return view('categories.index', compact('categories'));
-    } 
+    }
 
     public function store(Request $request)
     {

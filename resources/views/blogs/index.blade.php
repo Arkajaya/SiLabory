@@ -6,10 +6,14 @@
                 <x-primary-button x-data x-on:click="$dispatch('open-modal','create-blog')">+ Add Blog</x-primary-button>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 text-base">
+                    <div class="flex items-center justify-between mb-4">
+                        <input id="search-blogs" type="text" placeholder="Cari blog..." class="border rounded px-3 py-2 w-64 text-sm" />
+                        <div></div>
+                    </div>
                     <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto w-full text-sm text-left">
+                    <table id="blogs-table" class="min-w-full table-auto w-full text-sm text-left">
                         <thead>
                             <tr class="font-bold">
                                 <th class="px-4 py-2">No</th>
@@ -19,24 +23,8 @@
                                 <th class="px-4 py-2 text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($blogs as $blog)
-                                <tr class="border-t">
-                                    <td class="px-4 py-2">{{ $blogs->firstItem() + $loop->index }}</td>
-                                    <td class="px-4 py-2">{{ $blog->title }}</td>
-                                    <td class="px-4 py-2">{{ $blog->author?->name ?? '-' }}</td>
-                                    <td class="px-4 py-2">{{ $blog->status }}</td>
-                                    <td class="px-4 py-2 flex justify-start items-center">
-                                        <x-primary-button x-data x-on:click="$dispatch('open-modal','edit-blog-{{ $blog->id }}')" class="py-1 px-2">Edit</x-primary-button>
-                                        <span class="mx-2">|</span>
-                                        <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="ml-2 text-red-500">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        <tbody id="blogs-tbody">
+                            @include('blogs._rows')
                         </tbody>
                     </table>
                     </div>
@@ -96,3 +84,19 @@
         </x-modal>
     @endforeach
 </x-app-layout>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('search-blogs');
+    let timer = null;
+    input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            const q = encodeURIComponent(input.value || '');
+            fetch(window.location.pathname + '?q=' + q, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => { document.getElementById('blogs-tbody').innerHTML = html; });
+        }, 300);
+    });
+});
+</script>
