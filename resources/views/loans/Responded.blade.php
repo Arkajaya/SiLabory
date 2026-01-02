@@ -54,7 +54,7 @@
                                                 <span class="text-green-600 font-semibold">Returned</span>
 
                                             {{-- If loan is responded/borrowed, allow marking returned or contacting borrower --}}
-                                            @elseif(in_array($status, ['responded','dipinjam','borrowed','dipinjam']))
+                                            @elseif(in_array($status, ['responded','approved','dipinjam','borrowed']))
                                                 <form method="POST" action="{{ route('loans.update', $loan->id) }}" style="display:inline-block;">
                                                     @csrf
                                                     @method('PATCH')

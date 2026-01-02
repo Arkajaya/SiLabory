@@ -19,7 +19,7 @@ class LoanController extends Controller
         $loans = Loan::with(['user', 'loanDetails.item'])
             ->where('status', 'submitted')
             ->orderBy('loan_date', 'desc')
-            ->paginate(10);
+            ->paginate(6);
         $users = User::all();
         $items = Item::where('stock', '>', 0)->get();
         return view('loans.submited', compact('loans', 'users', 'items'));
@@ -28,9 +28,9 @@ class LoanController extends Controller
     public function indexResponded()
     {
         $loans = Loan::with(['user', 'loanDetails.item'])
-            ->whereIn('status', ['responded', 'rejected'])
+            ->whereIn('status', ['responded', 'approved', 'rejected'])
             ->orderBy('loan_date', 'desc')
-            ->paginate(10);
+            ->paginate(6);
         $users = User::all();
         $items = Item::where('stock', '>', 0)->get();
         return view('loans.Responded', compact('loans', 'users', 'items'));
@@ -38,8 +38,10 @@ class LoanController extends Controller
 
     public function list()
     {
-        $items = Item::where('stock', '>', 0)->get();
-        // dd($items);
+        $items = Item::where('stock', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
+
         return view('users.loan-show', compact('items'));
     }
 
@@ -120,10 +122,7 @@ class LoanController extends Controller
             $validated['loan_letter_photo'] = $path;
         }
 
-        // map form 'approved' to internal 'responded' so it appears on responded list
-        if (isset($validated['status']) && $validated['status'] === 'approved') {
-            $validated['status'] = 'responded';
-        }
+        // keep explicit 'approved' status so activities/reporting show it
 
         DB::transaction(function () use ($validated, $loan, $request) {
             $oldStatus = $loan->status;
@@ -185,7 +184,7 @@ class LoanController extends Controller
     {
         $loans = Loan::with(['user', 'loanDetails.item'])
             ->orderBy('updated_at', 'desc')
-            ->paginate(20);
+            ->paginate(6);
 
         return view('activities.index', compact('loans'));
     }

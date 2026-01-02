@@ -82,7 +82,7 @@
                                     </button>
                                 </x-slot>
 
-                                <x-slot name="content" class="-z-50">
+                                <x-slot name="content" class="z-50">
 
                                     <div class="pl-4 p-2 border-b border-slate-200">Hai, <span class="bg-green-300/50 px-1">{{ Auth::user()->name }}</span></div>
 
@@ -126,18 +126,26 @@
             <h1 class="text-4xl font-semibold text-[#473472] tracking-wider underline underline-offset-4">List Items</h1>
             <!-- component -->
             <div class="my-8 max-h-[86dvh] overflow-y-hidden hover:overflow-y-auto lg:w-[800px] w-[335px]">
-                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                 @foreach($items as $it)
-                    <li class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+                    <li class="max-w-80 col-span-2 divide-y divide-gray-200 rounded-lg bg-white shadow">
                         <div class="flex w-full items-center justify-between space-x-6 p-6">
                         <div class="flex-1 truncate">
                             <div class="flex items-center space-x-3">
-                            <h3 class="truncate text-sm font-medium text-gray-900">{{ $it->name }}</h3>
+                            <button x-data x-on:click="$dispatch('open-modal', 'item-detail-user-{{ $it->id }}')" class="truncate text-sm font-medium text-gray-900 text-left hover:text-indigo-600">{{ $it->name }}</button>
                             <span class="inline-flex flex-shrink-0 items-center rounded-full bg-green-400 px-1.5 py-0.5 text-xs font-medium text-white ring-1 ring-inset ring-green-600/20">available</span>
                             </div>
                             <p class="mt-1 truncate text-sm text-gray-500">Stock : <span class="font-bold">{{ $it->stock }}</span></p>
                         </div>
-                        <img class="h-10 w-10 flex-shrink-0 rounded-2xl bg-gray-300" src="{{ asset('storage/'. $it->photo ) }}" alt="">
+                        @php
+                            $img = $it->photo ?? null;
+                            if ($img && file_exists(public_path('storage/' . $img))) {
+                                $imgsrc = asset('storage/' . $img);
+                            } else {
+                                $imgsrc = asset('images/dummy1.png');
+                            }
+                        @endphp
+                        <img class="h-10 w-10 flex-shrink-0 rounded-2xl bg-gray-300 object-cover" src="{{ $imgsrc }}" alt="">
                         </div>
                         <div>
                             <x-primary-button
@@ -148,6 +156,30 @@
                                 Borrowed
                             </x-primary-button>
                         </div>
+
+                        <x-modal name="item-detail-user-{{ $it->id }}" :show="false">
+                            <h2 class="p-4 font-semibold bg-indigo-600 text-white">Detail Item</h2>
+                            <div class="p-6">
+                                <div class="flex flex-col sm:flex-row gap-6">
+                                    <div class="w-full sm:w-40 h-40 bg-gray-100 rounded-md overflow-hidden">
+                                        @if($it->photo && file_exists(public_path('storage/' . $it->photo)))
+                                            <img src="{{ asset('storage/' . $it->photo) }}" alt="{{ $it->name }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center text-gray-500">No Image</div>
+                                        @endif
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="text-2xl font-semibold text-[#473472]">{{ $it->name }}</h3>
+                                        <p class="text-sm text-gray-600">Category: {{ $it->category?->name ?? '-' }}</p>
+                                        <p class="text-sm text-gray-600">Stock: {{ $it->stock }}</p>
+                                        <div class="mt-4 text-sm text-gray-700 whitespace-pre-line">{{ $it->condition ?? '-' }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mt-6">
+                                    <x-secondary-button x-on:click="$dispatch('close-modal', 'item-detail-user-{{ $it->id }}')">Close</x-secondary-button>
+                                </div>
+                            </div>
+                        </x-modal>
 
                         <x-modal name="create-loan-user-{{ $it->id }}" :show="false">
                             <h2 class=" text-white shadow-md uppercase p-6 bg-sky-400 text-xl font-semibold tracking-wider">
@@ -209,6 +241,10 @@
                     </li>
                     @endforeach
                 </ul>
+
+                <div class="mt-6 flex justify-center">
+                    {{ $items->links() }}
+                </div>
             </div>
         </main>
         

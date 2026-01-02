@@ -26,8 +26,9 @@
                                     <td class="px-4 py-2">{{ $blog->title }}</td>
                                     <td class="px-4 py-2">{{ $blog->author?->name ?? '-' }}</td>
                                     <td class="px-4 py-2">{{ $blog->status }}</td>
-                                    <td class="px-4 py-2">
+                                    <td class="px-4 py-2 flex justify-start items-center">
                                         <x-primary-button x-data x-on:click="$dispatch('open-modal','edit-blog-{{ $blog->id }}')" class="py-1 px-2">Edit</x-primary-button>
+                                        <span class="mx-2">|</span>
                                         <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
@@ -49,7 +50,7 @@
     <x-modal name="create-blog" :show="false">
         <h2 class="p-6  text-white bg-sky-400 font-bold uppercase tracking-wider">Form | Add Blog</h2>
         <div class="px-6 py-6">
-            <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- author: current authenticated user --}} 
                 <input type="hidden" name="user_id" value="{{ auth()->id() }}" />
@@ -70,7 +71,7 @@
         <x-modal name="edit-blog-{{ $blog->id }}" :show="false">
             <h2 class="p-4 font-semibold bg-orange-400 text-white">Edit Blog</h2>
             <div class="p-4">
-                <form action="{{ route('blogs.update', $blog->id) }}" method="POST">
+                <form action="{{ route('blogs.update', $blog->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="mb-2">

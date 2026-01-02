@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mx-auto max-w-4xl my-12 bg-gray-200/40 rounded-lg shadow-lg overflow-hidden">
+    <div class="mx-auto max-w-7xl my-12 bg-gray-200/40 rounded-lg shadow-lg overflow-hidden">
         <div class="flex flex-col lg:flex-row items-start lg:items-center gap-8 p-6 lg:p-10">
             <div class="w-full lg:w-1/3 flex justify-center">
                 <img src="{{ asset('logo.png') }}" alt="" class="w-48 sm:w-56 lg:w-72">

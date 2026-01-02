@@ -123,7 +123,7 @@
             @endif
         </header>
         
-        <section class="relative isolate px-6 pt-5 lg:px-8  w-full">
+        <section class="relative isolate px-6 pt-5 lg:px-8 w-full">
             <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
                 <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"></div>
                 </div>
@@ -131,7 +131,7 @@
                 <div class="text-center relative">
                     <h1 class="text-5xl font-light text-balance text-[#473472] sm:text-7xl tracking-wider ">"<span class="font-semibold">Melayani</span> dengan Sepenuh Hati" <span class="text-lg align-middle absolute -right-5  italic">SIlabory et. al, 2025 </span></h1>
                     <div class="mt-16 flex items-center justify-center gap-x-6">
-                        <a href="#" class="rounded-md bg-[#87BAC3] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Pinjam Sekarang</a>
+                        <a href="{{ route('users.list') }}" class="rounded-md bg-[#87BAC3] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Pinjam Sekarang</a>
                         <a href="#" class="text-sm/6 font-semibold text-[#473472]">Hubungi Kami <span aria-hidden="true">→</span></a>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
             </div>
         </section>
         
-        <section id="blog" class=" py-24 sm:py-16">
+        <section id="blog" class="w-full py-24 sm:py-16">
             <div class="mx-auto max-w-7xl px-6 lg:px-8 ">
                 <div class="mx-auto max-w-2xl lg:mx-0">
                 <h2 class="text-4xl font-semibold text-pretty text-[#473472] tracking-wider sm:text-5xl">Berita Terkini</h2>
@@ -153,7 +153,16 @@
                 @forelse($blogs as $blog)
                 <article class="flex max-w-xl flex-col items-start justify-between">
                     <div class="w-full overflow-hidden mb-3 h-48 rounded-lg ">
-                        <img src="{{ asset('images/dummy1.png') }}" alt="blog image" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
+                        @php
+                            // blog images are optional in this app; prefer blog->image or blog->photo if present
+                            $blogImage = $blog->image ?? $blog->photo ?? null;
+                            if ($blogImage && file_exists(public_path('storage/' . $blogImage))) {
+                                $src = asset('storage/' . $blogImage);
+                            } else {
+                                $src = asset('images/dummy1.png');
+                            }
+                        @endphp
+                        <img src="{{ $src }}" alt="blog image" class="w-full h-full object-cover hover:scale-105 transition-all duration-300">
                     </div>
                     <div class="flex items-center gap-x-4 text-xs">
                         <time datetime="{{ $blog->created_at?->toDateString() }}" class="text-gray-400">{{ $blog->created_at?->format('M d, Y') }}</time>
@@ -179,6 +188,9 @@
                 @empty
                 <div class="col-span-3 text-center text-gray-500">Belum ada berita yang dipublikasikan.</div>
                 @endforelse
+                </div>
+                <div class="mt-8 text-center lg:text-left lg:col-span-3">
+                    <a href="{{ route('blogs.index') }}" class="inline-block mt-6 rounded-md bg-[#53629E] px-4 py-2 text-sm font-semibold text-white hover:bg-[#43507a]">Lihat Semua Berita</a>
                 </div>
             </div>
         </section>
