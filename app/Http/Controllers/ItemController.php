@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::with('category')->paginate(10);
+        $items = Item::with('category')->orderBy('created_at', 'desc')->paginate(6);
         $categories = Category::all();
         return view('items.index', compact('items', 'categories'));
     }
@@ -53,5 +53,31 @@ class ItemController extends Controller
         $item->delete();
 
         return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+    }
+
+    public function update(Request $request, Item $item)
+    {
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'stock' => 'required|integer|min:0',
+            'condition' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:5120',
+        ]);
+
+        // handle photo replacement
+        if ($request->hasFile('photo')) {
+            // delete old photo if exists
+            if ($item->photo && Storage::disk('public')->exists($item->photo)) {
+                Storage::disk('public')->delete($item->photo);
+            }
+
+            $path = $request->file('photo')->store('items', 'public');
+            $validated['photo'] = $path;
+        }
+
+        $item->update($validated);
+
+        return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
 }

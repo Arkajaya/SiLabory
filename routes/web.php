@@ -22,7 +22,7 @@ Route::get('/dashboard', function () {
     if ($user && ($user->hasRole('admin') || $user->hasRole('asisten'))) {
         return view('dashboardAdmin');
     }
-    return view('welcome');
+    return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

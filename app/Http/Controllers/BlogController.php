@@ -11,7 +11,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::with('author')->paginate(10);
+        $blogs = Blog::with('author')->orderBy('created_at', 'desc')->paginate(6);
         $users = User::all();
         return view('blogs.index', compact('blogs', 'users'));
     }
@@ -22,6 +22,7 @@ class BlogController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'status' => 'required|in:draft,published',
+            'photo' => 'nullable|image|max:5120',
         ]);
 
         $slug = Str::slug($validated['title']);
@@ -35,6 +36,11 @@ class BlogController extends Controller
         // ensure the blog author is the currently authenticated user
         $validated['user_id'] = auth()->id();
 
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('blogs', 'public');
+            $validated['photo'] = $path;
+        }
+
         Blog::create($validated);
 
         return redirect()->route('blogs.index')->with('success', 'Blog created.');
@@ -47,6 +53,7 @@ class BlogController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'status' => 'required|in:draft,published',
+            'photo' => 'sometimes|nullable|image|max:5120',
         ]);
 
         if ($validated['title'] !== $blog->title) {
@@ -57,6 +64,16 @@ class BlogController extends Controller
                 $slug = $base.'-'.$i++;
             }
             $validated['slug'] = $slug;
+        }
+
+        // handle photo replacement
+        if ($request->hasFile('photo')) {
+            // delete old photo if exists
+            if ($blog->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($blog->photo)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($blog->photo);
+            }
+            $path = $request->file('photo')->store('blogs', 'public');
+            $validated['photo'] = $path;
         }
 
         $blog->update($validated);
