@@ -6,48 +6,86 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Loan;
 use App\Models\LoanDetail;
-use Illuminate\Support\Facades\Auth;
-
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LoanController extends Controller
 {
     public function index()
     {
-        // show available items (stock > 0)
-        $items = Item::with('category')->where('stock', '>', 0)->paginate(12);
-        return view('loans.index', compact('items'));
+        return view('loans.index');
+    }
+
+    public function list()
+    {
+        $items = Item::where('stock', '>', 0)->get();
+        // dd($items);
+        return view('users.loan-show', compact('items'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'item_id' => 'required|exists:items,id',
-            'quantity' => 'required|integer|min:1',
+            'user_id' => 'required|exists:users,id',
             'loan_date' => 'required|date',
-            'return_date' => 'required|date|after_or_equal:loan_date',
+            'return_date' => 'nullable|date',
+            'status' => 'nullable|string|max:255',
+            'loan_letter' => 'nullable|string',
+            'loan_letter_photo' => 'nullable|image|max:5120',
+            'selected_items' => 'required|array|min:1',
+            'selected_items.*' => 'exists:items,id',
+            'quantities' => 'nullable|array',
+            'quantities.*' => 'nullable|integer|min:1',
         ]);
-
-        $item = Item::findOrFail($validated['item_id']);
-
-        if ($validated['quantity'] > $item->stock) {
-            return back()->withErrors(['quantity' => 'Requested quantity exceeds available stock.'])->withInput();
+        
+        if ($request->hasFile('loan_letter_photo')) {
+            $path = $request->file('loan_letter_photo')->store('loans', 'public');
+            $validated['loan_letter_photo'] = $path;
         }
 
-        $loan = Loan::create([
-            'user_id' => Auth::id(),
-            'loan_date' => Carbon::parse($validated['loan_date']),
-            'return_date' => Carbon::parse($validated['return_date']),
-            'status' => 'pending',
-        ]);
+        // items data and loan creation inside transaction
+        $selected = $request->input('selected_items', []);
+        $quantities = $request->input('quantities', []);
 
-        LoanDetail::create([
-            'loan_id' => $loan->id,
-            'item_id' => $item->id,
-            'quantity' => $validated['quantity'],
-            'condition' => $item->condition ?? '',
-        ]);
+        DB::transaction(function () use ($validated, $selected, $quantities) {
+            $loanData = $validated;
+            unset($loanData['selected_items'], $loanData['quantities']);
 
-        return redirect()->route('loans.index')->with('success', 'Loan request submitted. Menunggu approval dari admin.');
+            $loan = Loan::create($loanData);
+
+            foreach ($selected as $itemId) {
+                $qty = intval($quantities[$itemId] ?? 1);
+                if ($qty <= 0) continue;
+                $item = Item::find($itemId);
+                if (! $item) continue;
+
+                LoanDetail::create([
+                    'loan_id' => $loan->id,
+                    'item_id' => $item->id,
+                    'quantity' => $qty,
+                    'condition' => $item->condition,
+                ]);
+
+                // decrement stock
+                $item->decrement('stock', $qty);
+                $item->refresh();
+                if ($item->stock <= 0) {
+                    $item->item_status = 'borrowed';
+                    $item->save();
+                }
+            }
+        });
+
+        return redirect()->back()->with('success', 'Loan created successfully.');
+    }
+
+    public function history(Request $request)
+    {
+        $user = $request->user();
+        $loans = Loan::where('user_id', $user->id)
+            ->with('loanDetails.item')
+            ->orderBy('loan_date', 'desc')
+            ->get();
+
+        return view('users.user-loan', compact('loans'));
     }
 }

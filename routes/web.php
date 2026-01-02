@@ -32,8 +32,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-        // user
+    // user
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/items', [LoanController::class, 'list'])->name('users.list');
+    Route::post('/users/items', [LoanController::class, 'store'])->name('users.store.loan');
+    Route::get('/users/history', [LoanController::class, 'history'])->name('users.history');
     
     // item
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
@@ -52,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
     
     // loan
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
-    Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
 
 });
 
