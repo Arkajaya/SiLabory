@@ -56,22 +56,22 @@ class LoanController extends Controller
         return view('loans.Responded', compact('loans', 'users', 'items'));
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        // list available items for users with optional search
-        // accepts `q` query parameter and returns partial for AJAX
-        $q = request()->query('q');
+        $q = $request->query('q');
         $query = Item::where('stock', '>', 0)->orderBy('created_at', 'desc');
         if (! empty($q)) {
             $query->where(function($b) use ($q) {
                 $b->where('name', 'like', '%'.$q.'%')
                   ->orWhere('condition', 'like', '%'.$q.'%');
+            })->orWhereHas('category', function($c) use ($q) {
+                $c->where('name', 'like', '%'.$q.'%');
             });
         }
 
         $items = $query->paginate(6);
 
-        if (request()->ajax()) {
+        if ($request->ajax()) {
             return view('users._items_rows', compact('items'))->render();
         }
 
