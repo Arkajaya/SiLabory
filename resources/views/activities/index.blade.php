@@ -33,7 +33,7 @@
                             </tr>
                         </thead>
                         <tbody id="activities-tbody">
-                            @include('loans._rows')
+                            @include('activities._rows')
                         </tbody>
                     </table>
                     </div>
