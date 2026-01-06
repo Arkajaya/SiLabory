@@ -226,7 +226,7 @@ class LoanController extends Controller
         $loans = $query->orderBy('updated_at', 'desc')->paginate(6);
 
         if ($request->ajax()) {
-            return view('loans._rows', compact('loans'))->render();
+            return view('activities._rows', compact('loans'))->render();
         }
 
         return view('activities.index', compact('loans'));
