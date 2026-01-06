@@ -44,6 +44,7 @@
                 <div class="mb-2"><x-input-label value="Email" /><x-text-input type="email" name="email" class="w-full" required /></div>
                 <div class="mb-2"><x-input-label value="Password" /><x-text-input type="password" name="password" class="w-full" required /></div>
                 <div class="mb-2"><x-input-label value="NIM" /><x-text-input name="nim" class="w-full" /></div>
+                <div class="mb-2"><x-input-label value="Study Program" /><x-text-input name="study_program" class="w-full" /></div>
                 <div class="mb-2"><x-input-label value="Card Photo (optional)" /><input type="file" name="card_identity_photo" accept="image/*" class="w-full" /></div>
                 <div class="mb-2"><x-input-label value="Role" />
                     <select name="role" class="w-full border rounded-md text-slate-500">
@@ -83,6 +84,7 @@
                             </select>
                         </div>
                     </div>
+                    <div class="mb-2"><x-input-label value="Study Program" class="mb-2" /><x-text-input name="study_program" class="w-full" value="{{ old('study_program', $user->study_program) }}" /></div>
                     <div class="mb-2"><x-input-label value="Card Photo (optional)" /><input type="file" name="card_identity_photo" accept="image/*" class="w-full" />
                         @if($user->card_identity_photo)
                             <div class="mt-2 text-sm">Current: <a href="{{ asset('storage/'.$user->card_identity_photo) }}" target="_blank">View</a></div>

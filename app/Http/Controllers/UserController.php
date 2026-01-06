@@ -40,6 +40,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'nim' => 'nullable|string|unique:users,nim',
+            'study_program' => 'nullable|string|max:255',
             'card_identity_photo' => 'nullable|image|max:5120',
             'role' => 'nullable|string|exists:roles,name',
         ]);
@@ -63,6 +64,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6',
             'nim' => 'nullable|string|unique:users,nim,' . $user->id,
+            'study_program' => 'nullable|string|max:255',
             'card_identity_photo' => 'nullable|image|max:5120',
             'role' => 'nullable|string|exists:roles,name',
         ]);
